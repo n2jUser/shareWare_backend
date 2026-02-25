@@ -27,7 +27,7 @@ class Settings(BaseSettings):
     VERSION: str = "1.0.0"
 
     # ── CORS ──────────────────────────────────────────────────────────────────
-    FRONTEND_URL: str = "http://localhost:3000"
+    FRONTEND_URL: str = "https://shopwave-psi.vercel.app"
 
     # ── Stripe ────────────────────────────────────────────────────────────────
     STRIPE_SECRET_KEY: Optional[str] = None
