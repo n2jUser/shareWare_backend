@@ -16,6 +16,10 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self._store: dict[str, list[float]] = defaultdict(list)
 
     async def dispatch(self, request: Request, call_next):
+        # ✅ Laisser passer les requêtes preflight CORS
+        if request.method == "OPTIONS":
+            return await call_next(request)
+
         client_ip = request.client.host if request.client else "unknown"
         now = time.time()
         window_start = now - self.window_seconds

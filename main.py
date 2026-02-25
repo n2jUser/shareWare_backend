@@ -32,15 +32,21 @@ app = FastAPI(
 )
 
 # ── Middleware ──────────────────────────────────────────────────────────────────
+# ⚠️ Ordre inverse : le dernier ajouté s'exécute en premier
+# RateLimit ajouté en premier → s'exécute en dernier
+app.add_middleware(RateLimitMiddleware, max_requests=120, window_seconds=60)
+
+# CORS ajouté en dernier → s'exécute en premier ✅
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_URL],
+    allow_origins=[
+        settings.FRONTEND_URL,
+        "http://localhost:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-app.add_middleware(RateLimitMiddleware, max_requests=120, window_seconds=60)
 
 # ── Static files (images produits) ─────────────────────────────────────────────
 app.mount("/media", StaticFiles(directory="media"), name="media")
